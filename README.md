@@ -1,2 +1,2 @@
-# SJK002_Compputer_Vision
+# SJK002_Computer_Vision
 Intelligent systems subject
