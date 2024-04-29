@@ -1,0 +1,86 @@
+Spatial filtering
+
+Abstract
+We will learn how to inject different types and amounts of image noise, and to remove it or reduce it through
+spatial-domain filtering. In practice, introducing noise on purpose can serve two purposes: to learn about these
+noises, and to study the effect of different types of filtering in controlled conditions. We will look at different filters
+and their pros and cons. It is essential that you understand which filter is more adequate for each type of noise.
+
+Palabras clave
+Salt-and-pepper noise • Gaussian noise • Median, mean, and Gaussian filters
+Contents
+1 Generating noisy images 
+2 Image filtering 
+3 Exercises 
+
+1. Generating noisy images
+Salt-and-pepper noise
+We will produce salt-and-pepper noise with basic NumPy
+operations. As in other cases where code is provided, it is
+very important that you understand what each part of the code
+does and for which purpose, so that you can learn to write or
+modify code for similar situations.
+Gaussian noise
+To produce Gaussian noise, we use the module numpy.rando
+m. Notice that we do not use a function that directly applies
+the noise to an image, but we first generate Gaussian noise in
+an array of the same size of the original image, and then add
+. E4 this result to the image. Try also with Gaussian noise with
+σ twice the maximum value used in the original code.
+
+2. Image filtering
+To assess the practical value of a filter like those studied
+here, we need to consider, at least: (1) its effectiveness in
+denoising; (2) its behaviour preserving object edges; and (3)
+. E1 its computational cost as a function of the mask (filter) size.
+Mean filter
+To apply the mean filter, we will procede in a general way: the
+mask of the given size is first created, and then a convolution
+. E2 is applied. Make sure you understand how the mask is
+defined in the provided code. For convolution, the module sci
+py.ndimage.filters is used.
+Note that the given code applies the mean filter to images
+with salt-and-peper noise. Discuss how effective is this filter
+for that type of noise.
+Gaussian filter
+For the Gaussian filter, we use the module scipy.ndimage
+. E3 .filters. As you can see, this filter is applied to images
+with Gaussian noise. Does this filter work for this noise?
+Experiment with several values of the standard deviation of
+the noise and several values of the standard deviation of the
+Gaussian filter. Please, pay attention to the fact that Gaussian
+functions are used both for the noise and for the filter, but with
+different meanings; do not get confused, and make sure you
+understand what the Gaussian function represent in each case.
+To better appreciate the filtering result, you can zoom in
+on a relatively small area of the image (e.g. the nose, an eye,
+or a part of the hat). . E7
+Median filter
+Now we use the module scipy.signal. Observe the effect of
+the median filter on salt-and-pepper noise. With respect to the
+mean filter, is the median filter more or less effective? Why?
+Does the same happen if the filter size is “very high”?
+
+3. Exercises
+Prepare a double-entry table with types of noise and
+types of filters. In each table cell, write how effective
+that filter is for that noise. Add some comments or
+notes about the noise level that can be considered, or
+which filter parameters can be adequate, and possible
+“side effects” over the image (e.g. maybe a given filter
+decreases the amount of noise but also has a negative
+impact on other aspects of the image). Finally, you
+may include additional comments highlighting the key
+features of each filter, or comparing among them
+
+
+def averageFilterSep(im, filterSize):
+    row_mask = np.ones((filterSize, 1))
+    col_mask = np.ones((1, filterSize))
+    row_mask = np.divide(row_mask, np.sum(row_mask))
+    col_mask = np.divide(col_mask, np.sum(col_mask))
+
+    result = signal.convolve(im, row_mask, mode='same', method='direct')
+    result = signal.convolve(result, col_mask, mode='same', method='direct')
+
+    return result
